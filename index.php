@@ -76,4 +76,8 @@ if(((fileatime('shaarlis.opml')+60*60*24) < time()) OR !file_exists('shaarlis.op
 		echo "Access error to http://porneia.free.fr/pub/links/ou-est-shaarli.html";
 	}
 }
+else {
+	header('Content-type: text/xml');
+	echo file_get_contents('shaarlis.opml');
+}
 ?>
