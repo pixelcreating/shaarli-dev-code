@@ -14,3 +14,4 @@ dead-link.php
 ====================
 Generate a list of dead link in your's shaarli.
 Not demo.
+/!\ Vu qu'il y a une limite d'execution, il faut aller pallier par pallier. (tout les 10 pages environ)
