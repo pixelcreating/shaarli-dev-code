@@ -3,6 +3,7 @@ define('HOST_SHAARLI', 'your-shaarli.example');
 define('URL_SHAARLI', 'http://your-shaarli.example/links/');
 define('TOTAL_PAGE', 100);
 error_reporting(0);
+set_time_limit(0);
 function get_http_response_code($theURL) { # http://fr2.php.net/manual/fr/function.get-headers.php#97684
     $headers = get_headers($theURL);
     return substr($headers[0], 9, 3);
