@@ -1,4 +1,5 @@
 <?php
+$begin = microtime(TRUE);
 define('HOST_SHAARLI', 'your-shaarli.example');
 define('URL_SHAARLI', 'http://your-shaarli.example/links/');
 define('TOTAL_PAGE', 100);
@@ -25,4 +26,6 @@ while($page <= TOTAL_PAGE) {
 	search_dead_link(URL_SHAARLI.'/?page='.$page);
 	$page++;
 }
+$end = microtime(TRUE);
+echo round(($end - $begin),6).' seconds';
 ?>
