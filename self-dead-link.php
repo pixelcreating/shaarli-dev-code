@@ -13,17 +13,26 @@ function get_http_response_code($theURL) { # http://fr2.php.net/manual/fr/functi
    }
    return $code;
 }
+function get_title($url) {
+	preg_match('#<title ?[^>]*>(.*)</title>#Usi', file_get_contents($url), $title);
+	return isset($title[1]) ? $title[1] : null;
+}
 $link = array();
+$title = array();
 $datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('data/datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
 $fileopen=(fopen('website.csv','a+'));
 $total = count($datastore);
 $progress = 0;
+fwrite($fileopen,'"http_status", "url", "different_title", "old_title", "new_title"'.PHP_EOL);
 foreach($datastore as $shaarlink) {
 	$link[] = $shaarelink['url'];
 	$progress +=1;
 	$statut = get_http_response_code($shaarlink['url']);
 	if($statut != 200) {
-		$msglog = '"'.$statut.'", "'.$shaarlink['url'].'"'.PHP_EOL;
+		$title[] = $shaarelink['title'];
+		$newtitle = get_title($shaarlink['url']);
+		$status_title = ($shaarelink['title'] != $newtitle) ? 1 : 0;
+		$msglog = '"'.$statut.'", "'.$shaarlink['url'].'",'.'"'.$status_title.'", "'.$shaarelink['title'].'", "'.$newtitle.'"'.PHP_EOL;
 		echo floor($progress/$total).'% ('.$progress.'/'.$total.') '.$statut.' '.$shaarlink['url'].PHP_EOL;
 		ob_flush();
         flush();
@@ -36,7 +45,6 @@ foreach(array_count_values($link) as $k=>$v) {
 	}
 	fwrite($fileopen,$msglog);
 }
-
 $end = microtime(TRUE);
 echo round(($end - $begin),6).' seconds';
 echo "Done";
