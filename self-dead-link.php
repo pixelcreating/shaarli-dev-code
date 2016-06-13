@@ -26,7 +26,7 @@ $double_website=(fopen('double_website.csv','a+'));
 
 fwrite($down_website,'"http_status", "url", "title"'.PHP_EOL);
 
-$datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
+$datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('data/datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
 foreach($datastore as $shaarlink) {
 	if(substr($shaarlink['url'], 0, 1) != '?') { # on vérifie que c’est pas un lien local
 		$link[] = $shaarlink['url'];
