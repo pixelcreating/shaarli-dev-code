@@ -13,10 +13,12 @@ function get_http_response_code($theURL) { # http://fr2.php.net/manual/fr/functi
    }
    return $code;
 }
+$link = array();
 $datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('data/datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
 $fileopen=(fopen('website.csv','a+'));
 echo '<pre>';
 foreach($datastore as $shaarlink) {
+	$link[] = $shaarelink['url'];
 	$statut = get_http_response_code($shaarlink['url']);
 	if($statut != 200) {
 		$msglog = '"'.$statut.'", "'.$shaarlink['url'].'"'.PHP_EOL;
@@ -27,6 +29,13 @@ foreach($datastore as $shaarlink) {
 		fwrite($fileopen,$msglog);
 	}
 }
+foreach(array_count_values($link) as $k=>$v) {
+	if($v >1) {
+		$msglog = '"DOUBLON", "'.$k.'"'.PHP_EOL;
+	}
+	fwrite($fileopen,$msglog);
+}
+
 echo '</pre>';
 $end = microtime(TRUE);
 echo round(($end - $begin),6).' seconds';
