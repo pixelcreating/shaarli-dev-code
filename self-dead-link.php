@@ -14,12 +14,12 @@ function get_http_response_code($theURL) { # http://fr2.php.net/manual/fr/functi
    return $code;
 }
 $datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('data/datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
-$fileopen=(fopen('website.log','a+'));
+$fileopen=(fopen('website.csv','a+'));
 echo '<pre>';
 foreach($datastore as $shaarlink) {
 	$statut = get_http_response_code($shaarlink['url']);
 	if($statut != 200) {
-		$msglog = '('.$statut.') '.$shaarlink['url'].PHP_EOL;
+		$msglog = '"'.$statut.'", "'.$shaarlink['url'].'"'.PHP_EOL;
 		$msg = '(<a href="https://en.wikipedia.org/wiki/HTTP_'.$statut.'">'.$statut.'</a>) '.$shaarlink['url'].PHP_EOL;
 		echo $msg;
 		ob_flush();
