@@ -16,14 +16,15 @@ function get_http_response_code($theURL) { # http://fr2.php.net/manual/fr/functi
 $link = array();
 $datastore = unserialize(gzinflate(base64_decode(substr(file_get_contents('data/datastore.php'),strlen('<?php /* '),-strlen(' */ ?>')))));
 $fileopen=(fopen('website.csv','a+'));
-echo '<pre>';
+$total = count($datastore);
+$progress = 0;
 foreach($datastore as $shaarlink) {
 	$link[] = $shaarelink['url'];
+	$progress +=1;
 	$statut = get_http_response_code($shaarlink['url']);
 	if($statut != 200) {
 		$msglog = '"'.$statut.'", "'.$shaarlink['url'].'"'.PHP_EOL;
-		$msg = '(<a href="https://en.wikipedia.org/wiki/HTTP_'.$statut.'">'.$statut.'</a>) '.$shaarlink['url'].PHP_EOL;
-		echo $msg;
+		echo floor($progress/$total).'% ('.$progress.'/'.$total.') '.$statut.' '.$shaarlink['url'].PHP_EOL;
 		ob_flush();
         flush();
 		fwrite($fileopen,$msglog);
@@ -36,7 +37,6 @@ foreach(array_count_values($link) as $k=>$v) {
 	fwrite($fileopen,$msglog);
 }
 
-echo '</pre>';
 $end = microtime(TRUE);
 echo round(($end - $begin),6).' seconds';
 echo "Done";
