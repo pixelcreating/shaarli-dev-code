@@ -18,7 +18,7 @@ $fileopen=(fopen('website.log','a+'));
 echo '<pre>';
 foreach($datastore as $shaarlink) {
 	$statut = get_http_response_code($shaarlink['url']);
-	if(!in_array($statut, array(200, 201, 202, 203, 204, 203, 204, 205, 206, 207, 2010, 226, 302, 307))) {
+	if(!in_array($statut, array(200, 201, 202, 203, 204, 203, 204, 205, 206, 207, 2010, 226, 302, 307)) AND (substr($shaarlink['url'], 0, 1) != '?')) {
 		$msglog = '('.$statut.') '.$shaarlink['url'].PHP_EOL;
 		$msg = '(<a href="https://en.wikipedia.org/wiki/HTTP_'.$statut.'">'.$statut.'</a>) '.$shaarlink['url'].PHP_EOL;	
 		file_put_contents($statut.'.log', file_get_contents($statut.'.log').PHP_EOL.$shaarlink['url'].PHP_EOL);
